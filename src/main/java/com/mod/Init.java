@@ -4,11 +4,10 @@ import com.mod.commands.PlaySoundCommand;
 import com.mod.commands.PrintSoundsCommand;
 import com.mod.commands.SaveSoundsCommand;
 import com.mod.commands.SetSoundCommand;
-import com.mod.util.JsonParser;
+import com.mod.util.JsonReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -36,13 +35,23 @@ public class Init {
 
         /* import dropsounds */
 
-        Map<String, String> customSounds = JsonParser.readJsonFileOutsideJar("./CustomDropSounds/userSounds.json");
+        Map<String, Object> customSounds = JsonReader.readJsonFileOutsideJar("./CustomDropSounds/userSounds.json");
         if (customSounds != null)
         {
-            CustomDropSounds.dropsAndSounds.putAll(customSounds);
+            for (String key : customSounds.keySet())
+            {
+                if (customSounds.get(key) instanceof String)
+                {
+                    CustomDropSounds.dropsAndSounds.put(key, (String) customSounds.get(key));
+                }
+            }
         }
-        Map<String, String> defaultSounds = JsonParser.readJsonFileInsideJar("/assets/CustomDropSounds/defaultDropsounds.json");
+        Map<String, String> defaultSounds = JsonReader.readJsonFileInsideJar("/assets/CustomDropSounds/defaultDropsounds.json");
         CustomDropSounds.defaultDropsounds.putAll(defaultSounds);
+
+        /* import settings */
+
+//        CustomDropSounds.globalVolume =
 
 
         /* event handlers */
