@@ -10,18 +10,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.Sys;
 
 @SideOnly(Side.CLIENT)
-public class PlaySoundCommand extends CommandBase
+public class RemoveSoundCommand extends CommandBase
 {
     @Override
     public String getCommandName()
     {
-        return "playcds";
+        return "rmcds";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "/playcds <sound_name.wav>";
+        return "/rmcds <drop>";
     }
 
     @Override
@@ -29,10 +29,16 @@ public class PlaySoundCommand extends CommandBase
     {
         if (args.length < 1)
         {
-            Init.sendMsgToPlayer("§cNo args given");
+            Init.sendMsgToPlayer("§cnot enough args given");
             return;
         }
-        CustomDropSounds.playSoundFromName(args[0]);
+        if (!CustomDropSounds.removeSound(args[0]))
+        {
+            Init.sendMsgToPlayer("§cdoes not exist. check ur spelling.");
+            return;
+        }
+        CustomDropSounds.writeDropsoundsToJson();
+        Init.sendMsgToPlayer("§7removed successfully");
     }
 
     @Override

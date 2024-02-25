@@ -2,7 +2,6 @@ package com.mod;
 
 import com.google.gson.Gson;
 import com.mod.util.*;
-import net.minecraft.client.Minecraft;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -17,6 +16,7 @@ public class CustomDropSounds
     public static Map<String, String> dropsAndSounds = new HashMap<>();
     public static Map<String, String> defaultDropsounds = new HashMap<>();
     private static final String settingsFileName = "./CustomDropSounds/userSounds.json";
+    public static float globalVolume = .5f;
 
     //    adds a sound to a particular string detected in chat, given a few conditions
     public static void addSound(String dropName, String soundName)
@@ -49,7 +49,7 @@ public class CustomDropSounds
                 else
                 {
                     System.out.println("playing custom");
-                    playCustomSound(dropName);
+                    playCustomSoundFromName(dropsAndSounds.get(dropName));
                 }
                 gotoDefaults = false;
             }
@@ -66,9 +66,14 @@ public class CustomDropSounds
         }
     }
 
-    private static void playCustomSound(String dropName) {
-        String path = Init.resourcesPath + dropsAndSounds.get(dropName);
-        SoundFilePlayer.playCustomSound(path, .2f);
+//    private static void playCustomSoundFromDrop(String dropName) {
+//        String path = "./CustomDropSounds/" + dropsAndSounds.get(dropName);
+//        SoundFilePlayer.playCustomSound(path, .2f);
+//    }
+
+    private static void playCustomSoundFromName(String name) {
+        String path = "./CustomDropSounds/wavs/" + name;
+        SoundFilePlayer.playCustomSound(path, globalVolume);
     }
 
     //plays a sound from either the user defined or default sounds
@@ -81,7 +86,7 @@ public class CustomDropSounds
         }
         else
         {
-            playCustomSound(soundName);
+            playCustomSoundFromName(soundName);
         }
     }
 
@@ -92,16 +97,10 @@ public class CustomDropSounds
             @Override
             public void run() {
                 String path = "/assets/CustomDropSounds/wavs/" + sound;
-                SoundFilePlayer.playSound(path);
+                SoundFilePlayer.playSound(path, globalVolume);
             }
         });
         executor.shutdown();
-    }
-
-    private static String getResourcesPath()
-    {
-        String mcFolder = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
-        return mcFolder.substring(0, mcFolder.length() - 1) + Init.MODID + "\\" + "customDropsounds\\";
     }
 
 
@@ -126,4 +125,13 @@ public class CustomDropSounds
     }
 
 
+    public static boolean removeSound(String drop) {
+
+        if (!dropsAndSounds.containsKey(drop))
+        {
+            return false;
+        }
+        dropsAndSounds.remove(drop);
+        return true;
+    }
 }

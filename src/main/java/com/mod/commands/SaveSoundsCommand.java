@@ -14,19 +14,20 @@ public class SaveSoundsCommand extends CommandBase
     @Override
     public String getCommandName()
     {
-        return "savesounds";
+        return "savecds";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "/savesounds";
+        return "/savecds";
     }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         CustomDropSounds.writeDropsoundsToJson();
+        Init.sendMsgToPlayer("§7Sounds saved to §8./CustomDropSounds/userSounds.json");
     }
 
     @Override

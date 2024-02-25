@@ -16,13 +16,13 @@ public class SetSoundCommand extends CommandBase
     @Override
     public String getCommandName()
     {
-        return "setsound";
+        return "setcds";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "/setsound <sound_name.wav> <drop name>";
+        return "/setcds <sound_name.wav> <drop name>";
     }
 
     @Override
@@ -31,10 +31,12 @@ public class SetSoundCommand extends CommandBase
         if (args.length < 2)
         {
             //not enough info given by user D:
-            Init.sendMsgToPlayer("need 2 args dumbass, can't bind a sound to nothing");
+            Init.sendMsgToPlayer("§cneed 2 args dumbass, can't bind a sound to nothing");
         }
         String dropName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         CustomDropSounds.addSound(dropName, args[0]);
+        CustomDropSounds.writeDropsoundsToJson();
+        Init.sendMsgToPlayer("§7Saved: §3" + args[0] + "§7 plays on §6" + dropName);
     }
 
     @Override

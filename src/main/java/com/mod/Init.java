@@ -1,15 +1,13 @@
 package com.mod;
 
-import com.mod.commands.PlaySoundCommand;
-import com.mod.commands.PrintSoundsCommand;
-import com.mod.commands.SaveSoundsCommand;
-import com.mod.commands.SetSoundCommand;
+import com.mod.commands.*;
 import com.mod.util.JsonReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,10 +57,14 @@ public class Init {
         MinecraftForge.EVENT_BUS.register(new ChatListener());
 
         /* commands */
-        ClientCommandHandler.instance.registerCommand(new SetSoundCommand());
+        ClientCommandHandler.instance.registerCommand(new HelpCommand());
+        ClientCommandHandler.instance.registerCommand(new PlaySoundCommand());
         ClientCommandHandler.instance.registerCommand(new PrintSoundsCommand());
         ClientCommandHandler.instance.registerCommand(new SaveSoundsCommand());
-        ClientCommandHandler.instance.registerCommand(new PlaySoundCommand());
+        ClientCommandHandler.instance.registerCommand(new SetSoundCommand());
+        ClientCommandHandler.instance.registerCommand(new SetVolumeCommand());
+        ClientCommandHandler.instance.registerCommand(new RemoveSoundCommand());
+
 
     }
 
