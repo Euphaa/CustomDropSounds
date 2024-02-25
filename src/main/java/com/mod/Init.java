@@ -30,7 +30,8 @@ public class Init {
     {
         /* make necessary dirs */
         resourcesPath = generateResourcesPath();
-        checkForAndMakeDir(resourcesPath);
+        checkForAndMakeDir("./CustomDropSounds");
+        checkForAndMakeDir("./CustomDropSounds/wavs");
         CreateFile("./CustomDropSounds/userSounds.json");
 
         /* import dropsounds */
