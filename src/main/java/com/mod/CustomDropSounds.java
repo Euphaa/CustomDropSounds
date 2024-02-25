@@ -40,7 +40,15 @@ public class CustomDropSounds
         {
             if (msg.contains(dropName))
             {
-                playCustomSound(dropName);
+                if (defaultDropsounds.containsValue(dropsAndSounds.get(dropName)))
+                {
+                    //the name of the file is the same as one in default sounds, so it plays the one from the defaults
+                    playDefaultSound(dropName);
+                }
+                else
+                {
+                    playCustomSound(dropName);
+                }
                 gotoDefaults = false;
             }
         }
@@ -59,6 +67,20 @@ public class CustomDropSounds
     private static void playCustomSound(String dropName) {
         String path = Init.resourcesPath + dropsAndSounds.get(dropName);
         SoundFilePlayer.playCustomSound(path, .2f);
+    }
+
+    //plays a sound from either the user defined or default sounds
+    public static void playSoundFromName(String soundName)
+    {
+        if (defaultDropsounds.containsValue(soundName))
+        {
+            //the name of the file is the same as one in default sounds, so it plays the one from the defaults
+            playDefaultSound(soundName);
+        }
+        else
+        {
+            playCustomSound(soundName);
+        }
     }
 
     private static void playDefaultSound(String dropName) {

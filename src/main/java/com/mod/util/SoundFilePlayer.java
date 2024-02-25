@@ -7,6 +7,8 @@ import java.io.InputStream;
 
 public class SoundFilePlayer {
 
+    //plays a sound from outside of the jar. wav's should be stored in .minecraft/euphaasmod/
+    //i think this only works with wav files :/
     public static void playCustomSound(String filePath, float volume) {
         try {
             File soundFile = new File(filePath);
@@ -25,42 +27,38 @@ public class SoundFilePlayer {
         }
     }
 
+    //plays a sound from within the jar. root path is /resources
     public static void playSound(String fileName)
     {
         try {
-            // Load the audio file as a resource stream
             InputStream inputStream = SoundFilePlayer.class.getResourceAsStream(fileName);
-            if (inputStream == null) {
+            if (inputStream == null)
+            {
                 System.err.println("File not found: " + fileName);
                 return;
             }
 
-            // Convert the resource stream to an audio input stream
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
 
-            // Get audio format
             AudioFormat format = audioInputStream.getFormat();
 
-            // Open a SourceDataLine
             DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
             SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format);
             line.start();
 
-            // Read audio data and play
             int bufferSize = (int) format.getSampleRate() * format.getFrameSize();
             byte[] buffer = new byte[bufferSize];
             int bytesRead = 0;
-            while ((bytesRead = audioInputStream.read(buffer)) != -1) {
+            while ((bytesRead = audioInputStream.read(buffer)) != -1)
+            {
                 line.write(buffer, 0, bytesRead);
             }
 
-            // Stop and close the line
             line.drain();
             line.stop();
             line.close();
 
-            // Close the resources
             audioInputStream.close();
             inputStream.close();
         } catch (Exception e) {
