@@ -1,5 +1,6 @@
 package com.mod;
 
+import com.mod.commands.PlaySoundCommand;
 import com.mod.commands.PrintSoundsCommand;
 import com.mod.commands.SaveSoundsCommand;
 import com.mod.commands.SetSoundCommand;
@@ -28,7 +29,6 @@ public class Init {
     public void init(FMLInitializationEvent event)
     {
         /* make necessary dirs */
-        System.out.println("making dirs?");
         resourcesPath = generateResourcesPath();
         checkForAndMakeDir(resourcesPath);
 
@@ -38,7 +38,6 @@ public class Init {
 
 
         Map<String, String> defaultSounds = JsonParser.readJsonFileInsideJar("/assets/CustomDropSounds/defaultDropsounds.json");
-        System.out.println("putting all");
         CustomDropSounds.defaultDropsounds.putAll(defaultSounds);
 
 
@@ -49,6 +48,7 @@ public class Init {
         ClientCommandHandler.instance.registerCommand(new SetSoundCommand());
         ClientCommandHandler.instance.registerCommand(new PrintSoundsCommand());
         ClientCommandHandler.instance.registerCommand(new SaveSoundsCommand());
+        ClientCommandHandler.instance.registerCommand(new PlaySoundCommand());
 
     }
 
@@ -58,7 +58,6 @@ public class Init {
         File resourcesDir = new File(path);
         if (!resourcesDir.isDirectory()) {
             //dir doens't exist, time to make one
-            System.out.println("mkdirs called");
             resourcesDir.mkdirs();
         }
     }
