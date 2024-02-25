@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "custom_dropsounds",
+    "name": "CustomDropSounds",
+    "description": "plays custom sounds for certain chat messages. made for hypixel skyblock but works everywhere.",
+    "version": "1.0.0",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Euphaa"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
