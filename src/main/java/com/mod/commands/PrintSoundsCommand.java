@@ -31,13 +31,13 @@ public class PrintSoundsCommand extends CommandBase
     public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
 //        Init.sendMsgToPlayer(CustomDropSounds.getSoundsToString());
-        StringBuilder printable = new StringBuilder("§fUser defined:");
+        StringBuilder printable = new StringBuilder("§7User defined:");
         Map<String, String> customs = CustomDropSounds.dropsAndSounds;
         for (String key : customs.keySet())
         {
             printable.append("\n§6").append(key).append("§7 -> §3").append(customs.get(key));
         }
-        printable.append("\n§fDefault:");
+        printable.append("\n§7Default:");
         Map<String, String> defaults = CustomDropSounds.defaultDropsounds;
         for (String key : defaults.keySet())
         {

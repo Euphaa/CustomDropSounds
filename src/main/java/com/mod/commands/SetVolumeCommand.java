@@ -30,7 +30,7 @@ public class SetVolumeCommand extends CommandBase
     {
         if (args.length < 1)
         {
-            //not enough info given by user D:
+            Init.sendMsgToPlayer("§7Volume is set to §6" + CustomDropSounds.getGlobalVolume() * 100 + "%");
             return;
         }
 
@@ -47,7 +47,8 @@ public class SetVolumeCommand extends CommandBase
                 Init.sendMsgToPlayer("§cchoose a decimal between 0 and 1");
                 newVolume = 1;
             }
-            CustomDropSounds.globalVolume = newVolume;
+            CustomDropSounds.setGlobalVolume(newVolume);
+            CustomDropSounds.saveSettings();
             Init.sendMsgToPlayer("§7Volume set to §6" + newVolume * 100 + "%");
         }
         catch (NumberFormatException e)

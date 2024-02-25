@@ -1,17 +1,11 @@
 package com.mod.commands;
 
-import com.mod.CustomDropSounds;
 import com.mod.Init;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-
-import java.util.Arrays;
-
-import static com.mod.CustomDropSounds.writeDropsoundsToJson;
 
 @SideOnly(Side.CLIENT)
 public class HelpCommand extends CommandBase {
@@ -28,7 +22,7 @@ public class HelpCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         Init.sendMsgToPlayer(
-            "§f||| §6/volume§ecds §6<float> §7- sets the volume of (almost) all sounds played for values 0.0 - 1.0" +
+            "§f||| §6/volume§ecds §6<float> §7- sets the volume of (almost) all sounds played for values 0 - 1. can be run without any args to display the current volume." +
             "\n§f||| §6/play§ecds §6<soundName.wav> §7- plays a sound with a given name (note that sounds have to be in .wav format and be in the ./CustomDropSounds/wavs/ folder)" +
             "\n§f||| §6/print§ecds §7- prints all sound bindings to the chat" +
             "\n§f||| §6/save§ecds §7- saves all sound binds to the disk. done automatically most of the time." +

@@ -35,7 +35,7 @@ public class SetSoundCommand extends CommandBase
         }
         String dropName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         CustomDropSounds.addSound(dropName, args[0]);
-        CustomDropSounds.writeDropsoundsToJson();
+        CustomDropSounds.saveCustomSounds();
         Init.sendMsgToPlayer("§7Saved: §3" + args[0] + "§7 plays on §6" + dropName);
     }
 

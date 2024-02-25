@@ -3,10 +3,7 @@ package com.mod.util;
 
 import com.google.gson.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +11,7 @@ import java.util.Set;
 public class JsonReader
 {
     //only usefull for json that definitley only has string keys and values
-    public static Map<String, String> readJsonFileInsideJar(String path)
+    public static Map<String, Object> readJsonFileInsideJar(String path)
     {
         try
         {
@@ -28,7 +25,7 @@ public class JsonReader
             String json = scanner.hasNext() ? scanner.next() : "";
             scanner.close();
 
-            Map<String, String> map = new Gson().fromJson(json, HashMap.class);
+            Map<String, Object> map = new Gson().fromJson(json, HashMap.class);
 
             inputStream.close();
 
@@ -105,12 +102,22 @@ public class JsonReader
     }
 
     //turns a json in string form into a map
-    public static Map stringToMap(String content)
+//    public static Map stringToMap(String content)
+//    {
+//        Map<String, String> map = new Gson().fromJson(content, Map.class);
+//        return map;
+//    }
+
+    public static void writeToFile(String path, String txt)
     {
-        Map<String, String> map = new Gson().fromJson(content, Map.class);
-        return map;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path)))
+        {
+            writer.write(txt);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
     }
-
-
 
 }

@@ -26,7 +26,7 @@ public class SaveSoundsCommand extends CommandBase
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
-        CustomDropSounds.writeDropsoundsToJson();
+        CustomDropSounds.saveCustomSounds();
         Init.sendMsgToPlayer("§7Sounds saved to §8./CustomDropSounds/userSounds.json");
     }
 

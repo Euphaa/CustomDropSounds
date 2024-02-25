@@ -3,9 +3,6 @@ package com.mod;
 import com.google.gson.Gson;
 import com.mod.util.*;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +13,7 @@ public class CustomDropSounds
     public static Map<String, String> dropsAndSounds = new HashMap<>();
     public static Map<String, String> defaultDropsounds = new HashMap<>();
     private static final String settingsFileName = "./CustomDropSounds/userSounds.json";
-    public static float globalVolume = .5f;
+    public static Map<String, Object> settings;
 
     //    adds a sound to a particular string detected in chat, given a few conditions
     public static void addSound(String dropName, String soundName)
@@ -39,16 +36,13 @@ public class CustomDropSounds
         {
             if (msg.contains(dropName))
             {
-                Init.sendMsgToPlayer("match detected: " + dropName);
                 if (defaultDropsounds.containsValue(dropsAndSounds.get(dropName)))
                 {
-                    System.out.println("playing default");
                     //the name of the file is the same as one in default sounds, so it plays the one from the defaults
                     playDefaultSound(dropsAndSounds.get(dropName));
                 }
                 else
                 {
-                    System.out.println("playing custom");
                     playCustomSoundFromName(dropsAndSounds.get(dropName));
                 }
                 gotoDefaults = false;
@@ -71,9 +65,10 @@ public class CustomDropSounds
 //        SoundFilePlayer.playCustomSound(path, .2f);
 //    }
 
-    private static void playCustomSoundFromName(String name) {
+    private static void playCustomSoundFromName(String name)
+    {
         String path = "./CustomDropSounds/wavs/" + name;
-        SoundFilePlayer.playCustomSound(path, globalVolume);
+        SoundFilePlayer.playCustomSound(path, getGlobalVolume());
     }
 
     //plays a sound from either the user defined or default sounds
@@ -90,14 +85,17 @@ public class CustomDropSounds
         }
     }
 
-    private static void playDefaultSound(String sound) {
+    private static void playDefaultSound(String sound)
+    {
         //runs in a separate thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
+        executor.execute(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 String path = "/assets/CustomDropSounds/wavs/" + sound;
-                SoundFilePlayer.playSound(path, globalVolume);
+                SoundFilePlayer.playSound(path, getGlobalVolume());
             }
         });
         executor.shutdown();
@@ -105,23 +103,36 @@ public class CustomDropSounds
 
 
     //saves custom dropsounds
-    public static void writeDropsoundsToJson()
+    public static void saveCustomSounds()
     {
         String json = new Gson().toJson(dropsAndSounds);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./CustomDropSounds/userSounds.json")))
-        {
-            writer.write(json);
-        }
-        catch (IOException e)
-        {
-            System.err.println("Error writing to file: " + e.getMessage());
-        }
+        JsonReader.writeToFile("./CustomDropSounds/userSounds.json", json);
     }
 
-    public static String getSoundsToString()
+    public static float getGlobalVolume()
     {
-        return "User defined: " + dropsAndSounds.toString() + "\nDefault: " + defaultDropsounds.toString();
+        if (settings.get("globalVolume") instanceof Float)
+        {
+            return (float) settings.get("globalVolume");
+        }
+        return 0;
+    }
+
+    public static void setGlobalVolume(float x)
+    {
+        settings.put("globalVolume", x);
+    }
+
+//    public static String getSoundsToString()
+//    {
+//        return "User defined: " + dropsAndSounds.toString() + "\nDefault: " + defaultDropsounds.toString();
+//    }
+
+    public static void saveSettings()
+    {
+        String json = new Gson().toJson(settings);
+        Init.sendMsgToPlayer(json);
+        JsonReader.writeToFile("./CustomDropSounds/settings.json", json);
     }
 
 

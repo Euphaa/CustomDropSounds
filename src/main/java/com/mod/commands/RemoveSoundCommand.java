@@ -7,7 +7,6 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.Sys;
 
 @SideOnly(Side.CLIENT)
 public class RemoveSoundCommand extends CommandBase
@@ -37,7 +36,7 @@ public class RemoveSoundCommand extends CommandBase
             Init.sendMsgToPlayer("§cdoes not exist. check ur spelling.");
             return;
         }
-        CustomDropSounds.writeDropsoundsToJson();
+        CustomDropSounds.saveCustomSounds();
         Init.sendMsgToPlayer("§7removed successfully");
     }
 
