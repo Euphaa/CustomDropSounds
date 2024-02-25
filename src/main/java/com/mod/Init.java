@@ -33,7 +33,6 @@ public class Init {
         checkForAndMakeDir(resourcesPath);
 
         /* import dropsounds */
-//        ResourceLocation id = new ResourceLocation(Init.MODID, "victory.wav");
 
 
 

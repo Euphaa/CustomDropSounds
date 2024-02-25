@@ -8,6 +8,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
+
 @SideOnly(Side.CLIENT)
 public class SetSoundCommand extends CommandBase
 {
@@ -20,7 +22,7 @@ public class SetSoundCommand extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "/setsound <drop name> <sound_name.wav>";
+        return "/setsound <sound_name.wav> <drop name>";
     }
 
     @Override
@@ -31,7 +33,8 @@ public class SetSoundCommand extends CommandBase
             //not enough info given by user D:
             Init.sendMsgToPlayer("need 2 args dumbass, can't bind a sound to nothing");
         }
-        CustomDropSounds.addSound(args[0], args[1]);
+        String dropName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        CustomDropSounds.addSound(dropName, args[0]);
     }
 
     @Override
