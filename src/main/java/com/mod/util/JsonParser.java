@@ -3,6 +3,8 @@ package com.mod.util;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -30,6 +32,27 @@ public class JsonParser
             inputStream.close();
 
             return map;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Map<String, String> readJsonFileOutsideJar(String path) {
+        try
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                stringBuilder.append(line);
+            }
+            reader.close();
+            String json = stringBuilder.toString();
+            return new Gson().fromJson(json, HashMap.class);
         }
         catch (IOException e)
         {

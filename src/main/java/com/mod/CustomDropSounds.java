@@ -14,10 +14,9 @@ import java.util.concurrent.Executors;
 
 public class CustomDropSounds
 {
-    private static Map<String, String> dropsAndSounds = new HashMap<>();
+    public static Map<String, String> dropsAndSounds = new HashMap<>();
     public static Map<String, String> defaultDropsounds = new HashMap<>();
-    private static final String settingsFileName = "customDropsounds.json";
-    public static final String settingsFilePath = getResourcesPath() + settingsFileName;
+    private static final String settingsFileName = "./CustomDropSounds/userSounds.json";
 
     //    adds a sound to a particular string detected in chat, given a few conditions
     public static void addSound(String dropName, String soundName)
@@ -40,13 +39,16 @@ public class CustomDropSounds
         {
             if (msg.contains(dropName))
             {
+                Init.sendMsgToPlayer("match detected: " + dropName);
                 if (defaultDropsounds.containsValue(dropsAndSounds.get(dropName)))
                 {
+                    System.out.println("playing default");
                     //the name of the file is the same as one in default sounds, so it plays the one from the defaults
-                    playDefaultSound(dropName);
+                    playDefaultSound(dropsAndSounds.get(dropName));
                 }
                 else
                 {
+                    System.out.println("playing custom");
                     playCustomSound(dropName);
                 }
                 gotoDefaults = false;
@@ -59,7 +61,7 @@ public class CustomDropSounds
         {
             if (msg.contains(dropName))
             {
-                playDefaultSound(dropName);
+                playDefaultSound(defaultDropsounds.get(dropName));
             }
         }
     }
@@ -83,13 +85,13 @@ public class CustomDropSounds
         }
     }
 
-    private static void playDefaultSound(String dropName) {
+    private static void playDefaultSound(String sound) {
         //runs in a separate thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                String path = "/assets/CustomDropSounds/wavs/" + defaultDropsounds.get(dropName);
+                String path = "/assets/CustomDropSounds/wavs/" + sound;
                 SoundFilePlayer.playSound(path);
             }
         });
@@ -102,20 +104,13 @@ public class CustomDropSounds
         return mcFolder.substring(0, mcFolder.length() - 1) + Init.MODID + "\\" + "customDropsounds\\";
     }
 
-    public static void readDropsoundsJson()
-    {
-////        String[] lines = Files.readAllLines(Paths.get(getResourcesPath() + settingsFileName), StandardCharsets.UTF_8);
-//        String content = JsonParser.readJsonFile(getResourcesPath() + settingsFileName);
-//        Map<String, String> map = JsonParser.stringToMap(content);
-//        dropsAndSounds.putAll(map);
-    }
 
     //saves custom dropsounds
     public static void writeDropsoundsToJson()
     {
         String json = new Gson().toJson(dropsAndSounds);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getResourcesPath() + settingsFileName)))
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./CustomDropSounds/userSounds.json")))
         {
             writer.write(json);
         }

@@ -29,7 +29,6 @@ public class PlaySoundCommand extends CommandBase
     {
         if (args.length < 1) return;
         CustomDropSounds.playSoundFromName(args[0]);
-        Init.sendMsgToPlayer(CustomDropSounds.getSoundsToString());
     }
 
     @Override

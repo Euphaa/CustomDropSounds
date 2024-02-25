@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 @SideOnly(Side.CLIENT)
@@ -31,11 +32,15 @@ public class Init {
         /* make necessary dirs */
         resourcesPath = generateResourcesPath();
         checkForAndMakeDir(resourcesPath);
+        CreateFile("./CustomDropSounds/userSounds.json");
 
         /* import dropsounds */
 
-
-
+        Map<String, String> customSounds = JsonParser.readJsonFileOutsideJar("./CustomDropSounds/userSounds.json");
+        if (customSounds != null)
+        {
+            CustomDropSounds.dropsAndSounds.putAll(customSounds);
+        }
         Map<String, String> defaultSounds = JsonParser.readJsonFileInsideJar("/assets/CustomDropSounds/defaultDropsounds.json");
         CustomDropSounds.defaultDropsounds.putAll(defaultSounds);
 
@@ -49,6 +54,21 @@ public class Init {
         ClientCommandHandler.instance.registerCommand(new SaveSoundsCommand());
         ClientCommandHandler.instance.registerCommand(new PlaySoundCommand());
 
+    }
+
+    private static void CreateFile(String path) {
+        File f = new File(path);
+        if (!f.exists())
+        {
+            try
+            {
+                f.createNewFile();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     //makes a directory only if it doesn't exist already
