@@ -38,12 +38,15 @@ public class JsonReader
         return null;
     }
 
-    public static Map<String, Object> readJsonFileOutsideJar(String path) {
-        try {
+    public static Map<String, Object> readJsonFileOutsideJar(String path)
+    {
+        try
+        {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             StringBuilder stringBuilder = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null)
+            {
                 stringBuilder.append(line);
             }
             reader.close();
@@ -51,19 +54,23 @@ public class JsonReader
             Gson gson = new Gson();
             JsonElement jsonElement = new JsonParser().parse(json); // Corrected here
             return parseJsonElement(jsonElement);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
         return null;
     }
 
-    private static Map<String, Object> parseJsonElement(JsonElement jsonElement) {
+    private static Map<String, Object> parseJsonElement(JsonElement jsonElement)
+    {
         Map<String, Object> resultMap = new HashMap<>();
         if (!jsonElement.isJsonObject()) return resultMap;
 
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-        for (Map.Entry<String, JsonElement> entry : entrySet) {
+        for (Map.Entry<String, JsonElement> entry : entrySet)
+        {
             String key = entry.getKey();
             JsonElement value = entry.getValue();
             if (value.isJsonPrimitive())
@@ -78,7 +85,8 @@ public class JsonReader
         return resultMap;
     }
 
-    private static Object parseJsonPrimitive(JsonPrimitive primitive) {
+    private static Object parseJsonPrimitive(JsonPrimitive primitive)
+    {
         if (primitive.isNumber())
         {
             if (primitive.getAsString().contains("."))
